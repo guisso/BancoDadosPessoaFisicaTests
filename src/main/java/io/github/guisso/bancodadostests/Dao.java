@@ -31,7 +31,8 @@ public abstract class Dao<E, K>
         Long id = 0L;
 
         // TODO id==0 não distingue se uma pessoa física é nova ou se deve ser atualizada devido ao CPF sempre ser obrigatório
-        if (((Entidade) e).getId() == 0) {
+        if (((Entidade) e).getId() == null 
+                || ((Entidade) e).getId() == 0) {
             // Inserir novo registro
 
             try ( PreparedStatement preparedStatement
@@ -43,7 +44,7 @@ public abstract class Dao<E, K>
 
                         // montar a declaração sql com os dados (->?)
                         montarDeclaracao(preparedStatement, e);
-
+                        System.out.println("SQL: " + preparedStatement);
                         preparedStatement.executeUpdate();
 
                         ResultSet resultSet = preparedStatement.getGeneratedKeys();
