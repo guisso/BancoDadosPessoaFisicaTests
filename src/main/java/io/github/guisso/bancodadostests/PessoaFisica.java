@@ -24,7 +24,7 @@ public class PessoaFisica
         extends Entidade {
 
     // TODO cpf foi excluído devido ao uso indireto da id herdada de Entidade. No entanto, nota-se que o salvamento de um objeto PessoaFisica parece falhar porque SEMPRE é requerido um CPF válido, ou seja, sempre há uma id e isso SEMPRE indica uma ATUALIZAÇÃO, nunca uma inclusão.
-    // private Long cpf;
+    private Long cpf;
     private String nome;
     private String email;
     private LocalDate nascimento;
@@ -45,7 +45,7 @@ public class PessoaFisica
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     public Long getCpf() {
-        return getId();
+        return cpf;
     }
 
     public void setCpf(Long cpf)
@@ -53,7 +53,7 @@ public class PessoaFisica
         // TODO Validar CPF: se inválido, disparar exceção
         // https://www.devmedia.com.br/validando-o-cpf-em-uma-aplicacao-java/22097
         if (Util.isCpfValido(cpf)) {
-            setId(cpf);
+            this.cpf = cpf;
         } else {
             throw new IllegalArgumentException("CPF inválido");
         }
