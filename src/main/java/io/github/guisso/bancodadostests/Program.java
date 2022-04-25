@@ -59,13 +59,15 @@ public class Program {
 
         // Pessoa física para testes
         PessoaFisica pf = new PessoaFisica();
-//        pf.setCpf(123_456_789_01L);
+        pf.setId(3L);
+//        pf.setCpf(123_456_789_01L); // Inválido
 //        pf.setCpf( 68_129_760_32L);
-        pf.setCpf(    129_760_08L);
-        pf.setNome("Ana Zaira");
-        pf.setEmail("ana@mail.com");
-        pf.setNascimento(LocalDate.of(1986, 4, 18));
-        pf.setAtivo(true);
+//        pf.setCpf(    129_760_07L);
+        pf.setCpf(887_617_510_57L);
+        pf.setNome("Beatriz Yana");
+        pf.setEmail("beatriz@mail.com");
+        pf.setNascimento(LocalDate.of(1986, 4, 25));
+        pf.setAtivo(false);
         
         // A instrução de salvamento requer
         // operações em banco de dados via
