@@ -11,6 +11,7 @@
  */
 package io.github.guisso.bancodadostests;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 
 /**
@@ -24,27 +25,29 @@ public class PessoaFisicaDao
         extends Dao<PessoaFisica, Long> {
 
     /*
-CREATE TABLE `pessoafisica` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(50) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `nascimento` date DEFAULT NULL,
-  `ativo` tinyint(1) DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=latin1
+    CREATE TABLE `pessoafisica` (
+        `id` bigint(20) NOT NULL AUTO_INCREMENT,
+        `cpf` bigint(20) NOT NULL,
+        `nome` varchar(50) NOT NULL,
+        `email` varchar(255) DEFAULT NULL,
+        `nascimento` date DEFAULT NULL,
+        `ativo` tinyint(1) DEFAULT '1',
+        PRIMARY KEY (`id`),
+        UNIQUE KEY `cpf` (`cpf`),
+        UNIQUE KEY `email` (`email`)
+    ) ENGINE=MyISAM DEFAULT CHARSET=latin1
 -- */
 //    
     @Override
     public String obterSentencaInsert() {
-        return "insert into pessoafisica values (?, ?, ?, ?, ?);";
+        return "insert into pessoafisica (cpf, nome, email, nascimento, ativo) values (?, ?, ?, ?, ?);";
     }
 
     @Override
     public void montarDeclaracao(PreparedStatement pstmt, PessoaFisica e) {
 
         // -- SQLs a serem montadas "n" parâmetros:
-        // insert into pessoafisica values (?, ?, ?, ?, ?);
+        // insert into pessoafisica (cpf, nome, email, nascimento ativo) values (?, ?, ?, ?);
         // update pessoafisica set nome = ?, email = ?, nascimento = ?, ativo = ? where id = ?;
 //        
         // -- SQLs a serem montadas com 0/1 parâmetro
@@ -53,6 +56,21 @@ CREATE TABLE `pessoafisica` (
         // delete from pessoafisica where id = ?;
 //        
         // TODO Montar declaração SQL para "n" parâmetros
+        try {
+            if (e.getId() == null || e.getId() == 0) {
+                pstmt.setLong(1, e.getCpf());
+                pstmt.setString(2, e.getNome());
+                pstmt.setString(3, e.getEmail());
+                // https://www.baeldung.com/java-convert-localdate-sql-date
+                pstmt.setDate(4, Date.valueOf(e.getNascimento()));
+                pstmt.setBoolean(5, e.getAtivo());
+            } else {
+
+            }
+        } catch (Exception ex) {
+            System.out.println("Exceptoin: " + ex);
+        }
+
         // TODO Método específico SQL para 0/1 parâmetro
     }
 
