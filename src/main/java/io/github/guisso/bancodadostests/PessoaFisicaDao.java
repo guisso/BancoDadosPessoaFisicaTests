@@ -42,6 +42,11 @@ public class PessoaFisicaDao
     public String obterSentencaInsert() {
         return "insert into pessoafisica (cpf, nome, email, nascimento, ativo) values (?, ?, ?, ?, ?);";
     }
+    
+    @Override
+    public String obterSentencaUpdate() {
+        return "update pessoafisica set cpf = ?, nome = ?, email = ?, nascimento = ?, ativo = ? where id = ?;";
+    }
 
     @Override
     public void montarDeclaracao(PreparedStatement pstmt, PessoaFisica e) {
@@ -79,4 +84,6 @@ public class PessoaFisicaDao
     // delete from pessoafisica where id = ?;
     //
     // TODO Método específico SQL para 0/1 parâmetro
+
+    
 }
