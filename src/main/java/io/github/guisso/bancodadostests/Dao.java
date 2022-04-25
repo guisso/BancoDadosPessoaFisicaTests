@@ -31,10 +31,10 @@ public abstract class Dao<E, K>
         Long id = 0L;
 
         // TODO id==0 não distingue se uma pessoa física é nova ou se deve ser atualizada devido ao CPF sempre ser obrigatório
-        if (((Entidade) e).getId() == null 
+        if (((Entidade) e).getId() == null
                 || ((Entidade) e).getId() == 0) {
             // Inserir novo registro
-
+            // try-with-resources
             try ( PreparedStatement preparedStatement
                     = ConexaoBd
                             .getConexao()
@@ -59,7 +59,19 @@ public abstract class Dao<E, K>
 
         } else {
             // Atualizar registro existente
+            try ( PreparedStatement preparedStatement
+                    = ConexaoBd
+                            .getConexao()
+                            .prepareStatement(
+                                    obterSentencaUpdate())) {
 
+                        montarDeclaracao(preparedStatement, e);
+                        preparedStatement.executeUpdate();
+                        id = ((Entidade) e).getId();
+
+                    } catch (Exception ex) {
+                        System.out.println("Exception: " + ex);
+                    }
         }
 
         return (K) id;
@@ -72,6 +84,14 @@ public abstract class Dao<E, K>
      * @return Sentença SQL de inserção.
      */
     public abstract String obterSentencaInsert();
+
+    /**
+     * Sentença SQL específica para cada tipo de objeto a ser atualizado no
+     * banco de dados.
+     *
+     * @return Sentença SQL de atualização.
+     */
+    public abstract String obterSentencaUpdate();
 
     /**
      * Monta a declaração SQL com os valores contidos no objeto recebido.
