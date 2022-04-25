@@ -47,13 +47,8 @@ public class PessoaFisicaDao
     public void montarDeclaracao(PreparedStatement pstmt, PessoaFisica e) {
 
         // -- SQLs a serem montadas "n" parâmetros:
-        // insert into pessoafisica (cpf, nome, email, nascimento ativo) values (?, ?, ?, ?);
-        // update pessoafisica set nome = ?, email = ?, nascimento = ?, ativo = ? where id = ?;
-//        
-        // -- SQLs a serem montadas com 0/1 parâmetro
-        // select id, nome, email, nascimento from pessoafisica;
-        // select id, nome, email, nascimento from pessoafisica where id = ?;
-        // delete from pessoafisica where id = ?;
+        // insert into pessoafisica (cpf, nome, email, nascimento, ativo) values (?, ?, ?, ?, ?);
+        // update pessoafisica set cpf = ?, nome = ?, email = ?, nascimento = ?, ativo = ? where id = ?;
 //        
         // TODO Montar declaração SQL para "n" parâmetros
         try {
@@ -65,13 +60,23 @@ public class PessoaFisicaDao
                 pstmt.setDate(4, Date.valueOf(e.getNascimento()));
                 pstmt.setBoolean(5, e.getAtivo());
             } else {
-
+                pstmt.setLong(1, e.getCpf());
+                pstmt.setString(2, e.getNome());
+                pstmt.setString(3, e.getEmail());
+                pstmt.setDate(4, Date.valueOf(e.getNascimento()));
+                pstmt.setBoolean(5, e.getAtivo());
+                pstmt.setLong(6, e.getId());
             }
         } catch (Exception ex) {
             System.out.println("Exceptoin: " + ex);
         }
-
-        // TODO Método específico SQL para 0/1 parâmetro
     }
 
+    //        
+    // -- SQLs a serem montadas com 0/1 parâmetro
+    // select id, nome, email, nascimento from pessoafisica;
+    // select id, nome, email, nascimento from pessoafisica where id = ?;
+    // delete from pessoafisica where id = ?;
+    //
+    // TODO Método específico SQL para 0/1 parâmetro
 }
