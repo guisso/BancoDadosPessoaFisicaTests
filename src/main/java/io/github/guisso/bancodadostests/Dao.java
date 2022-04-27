@@ -28,54 +28,97 @@ public abstract class Dao<E, K>
     @Override
     public K salvar(E e) {
 
+        // Chave primária de resposta
         Long id = 0L;
 
-        // TODO id==0 não distingue se uma pessoa física é nova ou se deve ser atualizada devido ao CPF sempre ser obrigatório
         if (((Entidade) e).getId() == null
                 || ((Entidade) e).getId() == 0) {
             // Inserir novo registro
             // try-with-resources
             try ( PreparedStatement preparedStatement
-                    = ConexaoBd
-                            .getConexao()
-                            .prepareStatement(
-                                    obterSentencaInsert(),
-                                    Statement.RETURN_GENERATED_KEYS)) {
+                    = ConexaoBd.getConexao().prepareStatement(
+                            obterSentencaInsert(),
+                            Statement.RETURN_GENERATED_KEYS)) {
 
-                        // montar a declaração sql com os dados (->?)
-                        montarDeclaracao(preparedStatement, e);
-                        System.out.println("SQL: " + preparedStatement);
-                        preparedStatement.executeUpdate();
+                // Monta a declaração SQL com os dados (->?)
+                montarDeclaracao(preparedStatement, e);
 
-                        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+                // Exibe a sentença completa
+                System.out.println("SQL: " + preparedStatement);
 
-                        if (resultSet.next()) {
-                            id = resultSet.getLong(1);
-                        }
+                // Executa a inserção no banco de dados
+                preparedStatement.executeUpdate();
 
-                    } catch (Exception ex) {
-                        System.out.println(">> " + ex);
-                    }
+                // Recupera a chave primária gerada
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
+                // Movimenta para o primeiro dado recuperado
+                if (resultSet.next()) {
+
+                    // Recupera a chave primária retornada
+                    id = resultSet.getLong(1);
+                }
+
+            } catch (Exception ex) {
+                System.out.println(">> " + ex);
+            }
 
         } else {
             // Atualizar registro existente
             try ( PreparedStatement preparedStatement
-                    = ConexaoBd
-                            .getConexao()
-                            .prepareStatement(
-                                    obterSentencaUpdate())) {
+                    = ConexaoBd.getConexao().prepareStatement(
+                            obterSentencaUpdate())) {
 
-                        montarDeclaracao(preparedStatement, e);
-                        System.out.println(">> " + preparedStatement);
-                        preparedStatement.executeUpdate();
-                        id = ((Entidade) e).getId();
+                // Monta a declaração SQL com os dados (->?)
+                montarDeclaracao(preparedStatement, e);
 
-                    } catch (Exception ex) {
-                        System.out.println("Exception: " + ex);
-                    }
+                // Exibe a sentença completa
+                System.out.println(">> " + preparedStatement);
+
+                // Executa a atualização no banco de dados
+                preparedStatement.executeUpdate();
+
+                // Mantém a chave primária
+                id = ((Entidade) e).getId();
+
+            } catch (Exception ex) {
+                System.out.println("Exception: " + ex);
+            }
         }
 
         return (K) id;
+    }
+
+    /**
+     * Recupera um objeto do banco de dados.
+     *
+     * @param id Chave primária
+     * @return Objeto buscado
+     */
+    public E localizarPorId(K id) {
+        try ( PreparedStatement preparedStatement
+                = ConexaoBd.getConexao().prepareStatement(obterSentencaLocalizarPorId())) {
+
+            // Substitui respectiva id na sentença SQL
+            preparedStatement.setLong(1, (Long) id);
+
+            // Recupera os dados da consulta
+            ResultSet resultSet
+                    = preparedStatement.executeQuery();
+
+            // Movimenta para o primeiro dado recuperado
+            if (resultSet.next()) {
+
+                // Extrai o objeto representado pelo registro recuperado
+                return extrairObjeto(resultSet);
+            }
+
+        } catch (Exception ex) {
+            System.out.println(">> " + ex);
+        }
+
+        // Caso não haja registro com a id fornecida
+        return null;
     }
 
     /**
@@ -95,11 +138,21 @@ public abstract class Dao<E, K>
     public abstract String obterSentencaUpdate();
 
     /**
+     * Sentença SQL específica para cada tipo de objeto a ser localizado no
+     * banco de dados.
+     *
+     * @return Sentença SQL de consulta de um registro.
+     */
+    public abstract String obterSentencaLocalizarPorId();
+
+    /**
      * Monta a declaração SQL com os valores contidos no objeto recebido.
      *
      * @param pstmt Consulta a ser preparada.
      * @param e Objeto com valores a serem embutidos na consulta.
      */
     public abstract void montarDeclaracao(PreparedStatement pstmt, E e);
+
+    public abstract E extrairObjeto(ResultSet resultSet);
 
 }
