@@ -66,6 +66,7 @@ public abstract class Dao<E, K>
                                     obterSentencaUpdate())) {
 
                         montarDeclaracao(preparedStatement, e);
+                        System.out.println(">> " + preparedStatement);
                         preparedStatement.executeUpdate();
                         id = ((Entidade) e).getId();
 
