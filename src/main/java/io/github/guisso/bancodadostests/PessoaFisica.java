@@ -18,12 +18,11 @@ import java.time.LocalDate;
  * Entidade que representa uma pessoa física.
  *
  * @author Luis Guisso &lt;luis dot guisso at ifnmg dot edu dot br&gt;
- * @version 0.1, 18/04/2022
+ * @version 0.2, 27/04/2022
  */
 public class PessoaFisica
         extends Entidade {
 
-    // TODO cpf foi excluído devido ao uso indireto da id herdada de Entidade. No entanto, nota-se que o salvamento de um objeto PessoaFisica parece falhar porque SEMPRE é requerido um CPF válido, ou seja, sempre há uma id e isso SEMPRE indica uma ATUALIZAÇÃO, nunca uma inclusão.
     private Long cpf;
     private String nome;
     private String email;
@@ -93,6 +92,20 @@ public class PessoaFisica
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="toString">
+    @Override
+    public String toString() {
+        return "Entidade{id=" + getId()
+                + "} PessoaFisica{"
+                + "cpf=" + cpf
+                + ", nome=" + nome
+                + ", email=" + email
+                + ", nascimento=" + nascimento
+                + ", ativo=" + ativo
+                + '}';
     }
     //</editor-fold>
 
