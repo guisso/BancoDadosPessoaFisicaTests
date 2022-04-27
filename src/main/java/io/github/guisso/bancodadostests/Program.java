@@ -59,7 +59,7 @@ public class Program {
 
         // Pessoa física para testes
         PessoaFisica pf = new PessoaFisica();
-        pf.setId(4L);
+//        pf.setId(4L);
 //        pf.setCpf(123_456_789_01L); // Inválido
 //        pf.setCpf( 68_129_760_32L);
 //        pf.setCpf(    129_760_07L);
@@ -75,7 +75,13 @@ public class Program {
         // que deve ser uma dependência adiconada
         // ao projeto via "com.mysql"->"connector"
         // ou "mysql-connector-java"
-        new PessoaFisicaDao().salvar(pf);
+        Long id = new PessoaFisicaDao().salvar(pf);
+        
+        // Verificando se a pessoa física foi salva
+        PessoaFisica pessoaSalva 
+                = new PessoaFisicaDao().localizarPorId(id);
+        
+        System.out.println("-> " + pessoaSalva);
 
     }
 }
