@@ -13,6 +13,11 @@ package io.github.guisso.bancodadostests;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Operações concretas que suportam os procedimentos CRUD em objetos em banco de
@@ -42,10 +47,15 @@ public class PessoaFisicaDao
     public String obterSentencaInsert() {
         return "insert into pessoafisica (cpf, nome, email, nascimento, ativo) values (?, ?, ?, ?, ?);";
     }
-    
+
     @Override
     public String obterSentencaUpdate() {
         return "update pessoafisica set cpf = ?, nome = ?, email = ?, nascimento = ?, ativo = ? where id = ?;";
+    }
+
+    @Override
+    public String obterSentencaLocalizarPorId() {
+        return "select id, cpf, nome, email, nascimento, ativo from pessoafisica where id = ?;";
     }
 
     @Override
@@ -83,7 +93,23 @@ public class PessoaFisicaDao
     // select id, nome, email, nascimento from pessoafisica where id = ?;
     // delete from pessoafisica where id = ?;
     //
-    // TODO Método específico SQL para 0/1 parâmetro
+    @Override
+    public PessoaFisica extrairObjeto(ResultSet resultSet) {
+        PessoaFisica pf = new PessoaFisica();
 
-    
+        try {
+            pf.setId(resultSet.getLong("id"));
+            pf.setCpf(resultSet.getLong("cpf"));
+            pf.setNome(resultSet.getString("nome"));
+            pf.setEmail(resultSet.getNString("email"));
+            pf.setNascimento(resultSet.getObject("nascimento", LocalDate.class));
+            pf.setAtivo(resultSet.getBoolean("ativo"));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PessoaFisicaDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return pf;
+    }
+
 }
