@@ -20,7 +20,7 @@ import java.sql.Statement;
  * <i>Data Access Object</i>.
  *
  * @author Luis Guisso &lt;luis dot guisso at ifnmg dot edu dot br&gt;
- * @version 0.1, 18/04/2022
+ * @version 0.2, 27/04/2022
  */
 public abstract class Dao<E, K>
         implements IDao<E, K> {

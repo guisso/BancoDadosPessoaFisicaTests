@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * dados.
  *
  * @author Luis Guisso &lt;luis dot guisso at ifnmg dot edu dot br&gt;
- * @version 0.1, 18/04/2022
+ * @version 0.2, 27/04/2022
  */
 public class PessoaFisicaDao
         extends Dao<PessoaFisica, Long> {
