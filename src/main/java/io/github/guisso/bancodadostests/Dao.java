@@ -14,6 +14,8 @@ package io.github.guisso.bancodadostests;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementação de operações gerais e definição de operações específicas para
@@ -120,6 +122,32 @@ public abstract class Dao<E, K>
         // Caso não haja registro com a id fornecida
         return null;
     }
+    
+    public List<E> localizarTodos() {
+        
+        ArrayList<E> resposta = new ArrayList<>();
+        
+        try ( PreparedStatement preparedStatement
+                = ConexaoBd.getConexao().prepareStatement(obterSentencaLocalizarTodos())) {
+            
+            // Recupera os dados da consulta
+            ResultSet resultSet
+                    = preparedStatement.executeQuery();
+
+            // Iterar sobre todos os registros
+            while (resultSet.next()) {
+                
+                // Extrai e adionar "próximo" objeto
+                resposta.add(extrairObjeto(resultSet));
+            }
+
+        } catch (Exception ex) {
+            System.out.println(">> " + ex);
+        }
+
+        // Retorna todos os registros extraídos
+        return resposta;
+    }
 
     /**
      * Sentença SQL específica para cada tipo de objeto a ser persistido no
@@ -144,6 +172,8 @@ public abstract class Dao<E, K>
      * @return Sentença SQL de consulta de um registro.
      */
     public abstract String obterSentencaLocalizarPorId();
+    
+    public abstract String obterSentencaLocalizarTodos();
 
     /**
      * Monta a declaração SQL com os valores contidos no objeto recebido.
