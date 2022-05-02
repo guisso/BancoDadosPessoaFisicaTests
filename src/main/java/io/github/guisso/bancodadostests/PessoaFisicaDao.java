@@ -101,7 +101,7 @@ public class PessoaFisicaDao
             pf.setId(resultSet.getLong("id"));
             pf.setCpf(resultSet.getLong("cpf"));
             pf.setNome(resultSet.getString("nome"));
-            pf.setEmail(resultSet.getNString("email"));
+            pf.setEmail(resultSet.getString("email"));
             pf.setNascimento(resultSet.getObject("nascimento", LocalDate.class));
             pf.setAtivo(resultSet.getBoolean("ativo"));
 
