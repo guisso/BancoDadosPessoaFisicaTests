@@ -57,6 +57,11 @@ public class PessoaFisicaDao
     public String obterSentencaLocalizarPorId() {
         return "select id, cpf, nome, email, nascimento, ativo from pessoafisica where id = ?;";
     }
+    
+    @Override
+    public String obterSentencaLocalizarTodos() {
+        return "select id, cpf, nome, email, nascimento, ativo from pessoafisica;";
+    }
 
     @Override
     public void montarDeclaracao(PreparedStatement pstmt, PessoaFisica e) {
@@ -111,5 +116,7 @@ public class PessoaFisicaDao
 
         return pf;
     }
+
+    
 
 }
