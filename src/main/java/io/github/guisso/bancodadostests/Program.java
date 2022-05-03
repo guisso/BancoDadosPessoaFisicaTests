@@ -14,6 +14,7 @@ package io.github.guisso.bancodadostests;
 import io.github.guisso.bancodadostests.util.Util;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -62,13 +63,13 @@ public class Program {
 //        pf.setId(4L);
 //        pf.setCpf(123_456_789_01L); // Inválido
 //        pf.setCpf( 68_129_760_32L);
-//        pf.setCpf(    129_760_07L);
-        pf.setCpf(887_617_510_57L);
-        pf.setNome("Beatriz Yana");
-        pf.setEmail("biayana@mail.com");
-        pf.setNascimento(LocalDate.of(1986, 4, 27));
-        pf.setAtivo(false);
-        
+        pf.setCpf(    129_760_08L);
+//        pf.setCpf(887_617_510_57L);
+        pf.setNome("Ana Zaira");
+        pf.setEmail("ana@mail.com");
+        pf.setNascimento(LocalDate.of(1986, 5, 2));
+        pf.setAtivo(true);
+
         // A instrução de salvamento requer
         // operações em banco de dados via
         // Java Database Connectivity (JDBC)
@@ -76,12 +77,21 @@ public class Program {
         // ao projeto via "com.mysql"->"connector"
         // ou "mysql-connector-java"
         Long id = new PessoaFisicaDao().salvar(pf);
-        
+
         // Verificando se a pessoa física foi salva
-        PessoaFisica pessoaSalva 
+        PessoaFisica pessoaSalva
                 = new PessoaFisicaDao().localizarPorId(id);
-        
+
         System.out.println("-> " + pessoaSalva);
+
+        ArrayList<PessoaFisica> pessoas
+                = (ArrayList<PessoaFisica>) 
+                new PessoaFisicaDao().localizarTodos();
+
+        System.out.println("Todos os registros:");
+        for (PessoaFisica pessoa : pessoas) {
+            System.out.println(">> " + pessoa);
+        }
 
     }
 }
