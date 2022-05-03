@@ -57,10 +57,10 @@ public class PessoaFisicaDao
     public String obterSentencaLocalizarPorId() {
         return "select id, cpf, nome, email, nascimento, ativo from pessoafisica where id = ?;";
     }
-    
+
     @Override
     public String obterSentencaLocalizarTodos() {
-        return "select id, cpf, nome, email, nascimento, ativo from pessoafisica;";
+        return "select id, cpf, nome, email, nascimento, ativo from pessoafisica where excluido = false;";
     }
 
     @Override
@@ -98,6 +98,12 @@ public class PessoaFisicaDao
     // select id, nome, email, nascimento from pessoafisica where id = ?;
     // delete from pessoafisica where id = ?;
     //
+    /**
+     * Extrai um objeto PessoaFisica do resultado gerado pela consulta
+     *
+     * @param resultSet Registro recuperado do banco de dados
+     * @return PessoaFisica equivalente ao registro recebido
+     */
     @Override
     public PessoaFisica extrairObjeto(ResultSet resultSet) {
         PessoaFisica pf = new PessoaFisica();
@@ -116,7 +122,5 @@ public class PessoaFisicaDao
 
         return pf;
     }
-
-    
 
 }
