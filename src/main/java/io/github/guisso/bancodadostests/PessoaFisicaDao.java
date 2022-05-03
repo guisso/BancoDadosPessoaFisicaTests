@@ -63,6 +63,13 @@ public class PessoaFisicaDao
         return "select id, cpf, nome, email, nascimento, ativo from pessoafisica where excluido = false;";
     }
 
+    /**
+     * Substitui elementos variáveis na SQL preparada a partir do objeto de
+     * referência recebido
+     *
+     * @param pstmt Consulta preparada com valores ausentes
+     * @param e Objeto com dados relevantes para a consulta
+     */
     @Override
     public void montarDeclaracao(PreparedStatement pstmt, PessoaFisica e) {
 
