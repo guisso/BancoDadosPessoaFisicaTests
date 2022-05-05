@@ -84,13 +84,19 @@ public class PessoaFisicaDao
                 pstmt.setString(2, e.getNome());
                 pstmt.setString(3, e.getEmail());
                 // https://www.baeldung.com/java-convert-localdate-sql-date
-                pstmt.setDate(4, Date.valueOf(e.getNascimento()));
+                // Correção para suportar valores nulos
+                // https://stackoverflow.com/questions/14514589/inserting-null-to-an-integer-column-using-jdbc
+//                pstmt.setDate(4, Date.valueOf(e.getNascimento()));
+                pstmt.setObject(4, e.getNascimento(),
+                        java.sql.Types.DATE);
                 pstmt.setBoolean(5, e.getAtivo());
             } else {
                 pstmt.setLong(1, e.getCpf());
                 pstmt.setString(2, e.getNome());
                 pstmt.setString(3, e.getEmail());
-                pstmt.setDate(4, Date.valueOf(e.getNascimento()));
+                // Correção para suportar valores nulos
+                pstmt.setObject(4, e.getNascimento(),
+                        java.sql.Types.DATE);
                 pstmt.setBoolean(5, e.getAtivo());
                 pstmt.setLong(6, e.getId());
             }
