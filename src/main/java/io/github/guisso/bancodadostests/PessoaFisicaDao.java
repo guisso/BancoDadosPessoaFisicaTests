@@ -72,45 +72,27 @@ public class PessoaFisicaDao
      */
     @Override
     public void montarDeclaracao(PreparedStatement pstmt, PessoaFisica e) {
-
-        // -- SQLs a serem montadas "n" parâmetros:
-        // insert into pessoafisica (cpf, nome, email, nascimento, ativo) values (?, ?, ?, ?, ?);
-        // update pessoafisica set cpf = ?, nome = ?, email = ?, nascimento = ?, ativo = ? where id = ?;
-//        
-        // TODO Montar declaração SQL para "n" parâmetros
         try {
-            if (e.getId() == null || e.getId() == 0) {
-                pstmt.setLong(1, e.getCpf());
-                pstmt.setString(2, e.getNome());
-                pstmt.setString(3, e.getEmail());
-                // https://www.baeldung.com/java-convert-localdate-sql-date
-                // Correção para suportar valores nulos
-                // https://stackoverflow.com/questions/14514589/inserting-null-to-an-integer-column-using-jdbc
+            pstmt.setLong(1, e.getCpf());
+            pstmt.setString(2, e.getNome());
+            pstmt.setString(3, e.getEmail());
+            // https://www.baeldung.com/java-convert-localdate-sql-date
+            // Correção para suportar valores nulos
+            // https://stackoverflow.com/questions/14514589/inserting-null-to-an-integer-column-using-jdbc
 //                pstmt.setDate(4, Date.valueOf(e.getNascimento()));
-                pstmt.setObject(4, e.getNascimento(),
-                        java.sql.Types.DATE);
-                pstmt.setBoolean(5, e.getAtivo());
-            } else {
-                pstmt.setLong(1, e.getCpf());
-                pstmt.setString(2, e.getNome());
-                pstmt.setString(3, e.getEmail());
-                // Correção para suportar valores nulos
-                pstmt.setObject(4, e.getNascimento(),
-                        java.sql.Types.DATE);
-                pstmt.setBoolean(5, e.getAtivo());
+            pstmt.setObject(4, e.getNascimento(),
+                    java.sql.Types.DATE);
+            pstmt.setBoolean(5, e.getAtivo());
+
+            if (e.getId() != null && e.getId() != 0) {
                 pstmt.setLong(6, e.getId());
             }
+
         } catch (Exception ex) {
             System.out.println("Exceptoin: " + ex);
         }
     }
 
-    //        
-    // -- SQLs a serem montadas com 0/1 parâmetro
-    // select id, nome, email, nascimento from pessoafisica;
-    // select id, nome, email, nascimento from pessoafisica where id = ?;
-    // delete from pessoafisica where id = ?;
-    //
     /**
      * Extrai um objeto PessoaFisica do resultado gerado pela consulta
      *
