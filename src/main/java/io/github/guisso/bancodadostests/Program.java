@@ -1,17 +1,7 @@
 package io.github.guisso.bancodadostests;
 
-import io.github.guisso.bancodadostests.repository.PessoaFisicaDao;
-import io.github.guisso.bancodadostests.entity.PessoaFisica;
 import io.github.guisso.bancodadostests.entity.Usuario;
 import io.github.guisso.bancodadostests.repository.UsuarioDao;
-import io.github.guisso.bancodadostests.util.Util;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.text.MaskFormatter;
 
 /**
  * Ponto de entrada no sistema.
