@@ -80,7 +80,7 @@ public class UsuarioDao
     public Usuario extrairObjeto(ResultSet resultSet) {
         Usuario resposta = new Usuario();
 
-        // Gerar objeto a partir do resultSet
+        // TODO Gerar objeto a partir do resultSet
         resposta.setId(null);
         resposta.setNomeSistema(null);
         resposta.setSenha(null);  // Desejável???
@@ -91,13 +91,12 @@ public class UsuarioDao
 
     public Usuario autenticar(Usuario usuario) {
 
-        Usuario padrao = null;
+        Usuario resposta = null;
 
-        // Validar usuario
+        // Validação de usuario
         try ( PreparedStatement preparedStatement
-                = ConexaoBd.getConexao().prepareStatement("select * from usuario where nomesistema = '?' and senha = md5('1FnM6?');")) {
+                = ConexaoBd.getConexao().prepareStatement("select * from usuario where nomesistema = '?' and senha = md5(concat('1FnM6', ?));")) {
 
-            // Substitui respectivo nome do sistema na sentença SQL
             preparedStatement.setString(1, usuario.getNomeSistema());
             preparedStatement.setString(2, usuario.getSenha());
 
@@ -116,7 +115,7 @@ public class UsuarioDao
             System.out.println(">> " + ex);
         }
 
-        return padrao;
+        return resposta;
     }
 
 }
