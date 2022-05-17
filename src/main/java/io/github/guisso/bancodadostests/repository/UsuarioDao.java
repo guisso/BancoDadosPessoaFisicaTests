@@ -78,7 +78,15 @@ public class UsuarioDao
 
     @Override
     public Usuario extrairObjeto(ResultSet resultSet) {
-        return null;
+        Usuario resposta = new Usuario();
+
+        // Gerar objeto a partir do resultSet
+        resposta.setId(null);
+        resposta.setNomeSistema(null);
+        resposta.setSenha(null);  // Desejável???
+        resposta.setAdministrador(null);
+
+        return resposta;
     }
 
     public Usuario autenticar(Usuario usuario) {
