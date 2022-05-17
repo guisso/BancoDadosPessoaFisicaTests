@@ -22,6 +22,7 @@ public class Usuario
 
     private String nomeSistema;
     private String senha;
+    private Boolean administrador;
 
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     public String getNomeSistema() {
@@ -38,6 +39,14 @@ public class Usuario
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Boolean getAdministrador() {
+        return administrador;
+    }
+
+    public void setAdministrador(Boolean administrador) {
+        this.administrador = administrador;
     }
     //</editor-fold>
 
