@@ -24,6 +24,12 @@ public class Usuario
     private String senha;
     private Boolean administrador;
 
+    //<editor-fold defaultstate="collapsed" desc="Constructor">
+    public Usuario() {
+        administrador = false;
+    }
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Getters/Setters">
     public String getNomeSistema() {
         return nomeSistema;
