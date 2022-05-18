@@ -15,11 +15,19 @@ public class Program {
 
         Usuario u = new Usuario();
         u.setNomeSistema("cecilia@mail.com");
-        u.setSenha("asdf123");
+        u.setSenha("123456");
         u.setAdministrador(Boolean.TRUE);
 
-        Long novaId = new UsuarioDao().salvar(u);
-        System.out.println(">> " + novaId);
+//        Long novaId = new UsuarioDao().salvar(u);
+//        System.out.println(">> " + novaId);
+
+        Usuario recuperado = new UsuarioDao().autenticar(u);
+        
+        if(recuperado != null) {
+            System.out.println("Usuário autêntico!");
+        } else {
+            System.out.println("Acesso não autorizado.");
+        }
 
     }
 }
