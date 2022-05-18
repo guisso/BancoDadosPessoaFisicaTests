@@ -38,10 +38,12 @@ import java.util.logging.Logger;
  */
 public class UsuarioDao
         extends Dao<Usuario, Long> {
+    
+    private static final String SALT = "1FnM6";
 
     @Override
     public String obterSentencaInsert() {
-        return "insert into usuario (id, nomesistema, senha, admin) values (default, ?, md5(concat('1FnM6', ?)), ?);";
+        return "insert into usuario (id, nomesistema, senha, admin) values (default, ?, md5(concat('" + SALT + "', ?)), ?);";
     }
 
     @Override
@@ -79,13 +81,15 @@ public class UsuarioDao
     @Override
     public Usuario extrairObjeto(ResultSet resultSet) {
         Usuario resposta = new Usuario();
+        try {
+            resposta.setId(resultSet.getLong("id"));
+            resposta.setNomeSistema(resultSet.getString("nomesistema"));
+            resposta.setSenha(null);  // Desejável???
+            resposta.setAdministrador(resultSet.getBoolean("admin"));
 
-        // TODO Gerar objeto a partir do resultSet
-        resposta.setId(null);
-        resposta.setNomeSistema(null);
-        resposta.setSenha(null);  // Desejável???
-        resposta.setAdministrador(null);
-
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return resposta;
     }
 
@@ -95,7 +99,7 @@ public class UsuarioDao
 
         // Validação de usuario
         try ( PreparedStatement preparedStatement
-                = ConexaoBd.getConexao().prepareStatement("select * from usuario where nomesistema = '?' and senha = md5(concat('1FnM6', ?));")) {
+                = ConexaoBd.getConexao().prepareStatement("select * from usuario where nomesistema = '?' and senha = md5(concat('" + SALT + "', ?));")) {
 
             preparedStatement.setString(1, usuario.getNomeSistema());
             preparedStatement.setString(2, usuario.getSenha());
